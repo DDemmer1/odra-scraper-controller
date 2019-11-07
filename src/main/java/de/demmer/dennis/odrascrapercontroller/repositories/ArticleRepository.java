@@ -10,6 +10,11 @@ import java.util.List;
 public interface ArticleRepository extends CrudRepository<Article, Integer>{
 
 
-    List<Article> findByAuthor(String author);
+    List<Article> findByLink(String link);
 
+    List<Article> findBySourceName(String source);
+    List<Article> findBySourceNameOrderByAuthor(String source);
+    List<Article> findBySourceNameOrderByCrawlDateDesc(String source);
+
+    long countAllBySourceName(String source);
 }
