@@ -2,11 +2,13 @@ package de.demmer.dennis.odrascrapercontroller.services;
 
 import de.demmer.dennis.odrascrapercontroller.entities.Article;
 import de.demmer.dennis.odrascrapercontroller.repositories.ArticleRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Log4j2
 @Service
 public class ArticleService {
 
@@ -33,6 +35,26 @@ public class ArticleService {
 
     public Article findById(Integer id) {
         return articleRepository.findById(id).orElse(new Article());
+    }
+
+
+    public List<Article> findBySourceNameAndQuery(String sourceName, int limit, String query){
+        if(query == null || query.equals("")){
+            return findBySourceName(sourceName,limit);
+        } else {
+            List<Article> results = articleRepository.findByTextBodyContainingOrHeadlineContainingOrderByCrawlDateDesc(query,query);
+            if(!sourceName.equals("all")){
+                results.removeIf(article -> (!article.getSourceName().equals(sourceName)));
+            }
+            if(limit <= 0){
+                return results;
+            } else {
+                int index = results.size() > limit ? limit : results.size();
+                return results.subList(0,index);
+            }
+
+        }
+
     }
 
     public List<Article> findBySourceName(String sourceName, int limit) {
