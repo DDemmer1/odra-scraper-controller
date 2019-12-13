@@ -35,6 +35,11 @@ public class MainController {
     public List<Article> getArticleBySourceName(@PathVariable String source,
                                                 @RequestParam(value = "limit", required = false) Integer limit,
                                                 @RequestParam(value = "query", required = false) String query) throws IOException {
+        if(source.equals("test")){
+            return articleService.test();
+        }
+
+
         limit = (limit == null) ? 0 : limit;
         if(query==null||query.equals("")){
             return articleService.findBySourceName(source, limit);
@@ -44,27 +49,14 @@ public class MainController {
 
     }
 
-    @GetMapping("/articles/source/test")
-    public List<Article> getTest(@RequestParam(value = "limit", required = false) Integer limit,
-                                 @RequestParam(value = "query", required = false) String query) throws IOException {
-//        limit = (limit == null) ? 0 : limit;
-//        if(query==null||query.equals("")){
-//            return articleService.findBySourceName(source, limit);
-//        } else{
-//            return articleService.findBySourceNameAndQuery(source, limit, query);
-//        }
-
-        return articleService.test();
-
-    }
-
     @GetMapping("/scraper/add")
-    public String setScraper( @RequestParam(value = "url", required = true) String url) {
+    public String setScraper( @RequestParam(value = "url", required = true) String url, @RequestParam(value = "name", required = true) String name) {
         Scraper scraper = new Scraper();
         scraper.setUrl(url);
+        scraper.setName(name);
         scraperService.save(scraper);
         scraperConnector.getArticles();
-        return "Scraper was added";
+        return "Scraper with URL: '"+ url +"' was added";
     }
 
 

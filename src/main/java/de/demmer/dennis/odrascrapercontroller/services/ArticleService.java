@@ -1,6 +1,7 @@
 package de.demmer.dennis.odrascrapercontroller.services;
 
 import de.demmer.dennis.odrascrapercontroller.entities.Article;
+import de.demmer.dennis.odrascrapercontroller.entities.Scraper;
 import de.demmer.dennis.odrascrapercontroller.repositories.ArticleRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ public class ArticleService {
 
     @Autowired
     ArticleRepository articleRepository;
+
+    @Autowired
+    ScraperService scraperService;
 
     /**
      * Saves an Article in the database
@@ -78,7 +82,12 @@ public class ArticleService {
     public List<Article> test() {
         List<Article> testArticles = new ArrayList<>();
 
-//        articleRepository.findBySourceName()
+        for (String name : scraperService.getAllScraperNames()) {
+            List articelList = articleRepository.findBySourceName(name);
+            if(articelList.size() > 0){
+                testArticles.add(articleRepository.findBySourceName(name).get(0));
+            }
+        }
 
         return testArticles;
     }

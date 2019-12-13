@@ -18,5 +18,7 @@ public class Scraper {
     @Column(length = 60)
     private String url;
 
+    private String name;
+
 
 }

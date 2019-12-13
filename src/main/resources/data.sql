@@ -1,2 +1,2 @@
-INSERT INTO scraper(url) VALUES('http://odra-scraper:8081/spiegel');
-INSERT INTO scraper(url) VALUES('http://odra-scraper:8081/pikio');
+INSERT INTO scraper(url, name) VALUES('http://odra-scraper:8081/spiegel', 'spiegel');
+INSERT INTO scraper(url, name) VALUES('http://odra-scraper:8081/pikio', 'pikio');

@@ -27,6 +27,18 @@ public class ScraperService {
     }
 
 
+    public List<String> getAllScraperNames() {
+
+        List<String> scraperNames = new ArrayList<>();
+
+        for (Scraper scraper : scraperRepository.findAll()) {
+            scraperNames.add(scraper.getName());
+        }
+
+        return scraperNames;
+    }
+
+
     public void save(Scraper scraper){
         scraperRepository.save(scraper);
     }
