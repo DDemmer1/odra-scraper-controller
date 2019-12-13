@@ -1,7 +1,10 @@
 package de.demmer.dennis.odrascrapercontroller.controller;
 
 import de.demmer.dennis.odrascrapercontroller.entities.Article;
+import de.demmer.dennis.odrascrapercontroller.entities.Scraper;
 import de.demmer.dennis.odrascrapercontroller.services.ArticleService;
+import de.demmer.dennis.odrascrapercontroller.services.ScraperService;
+import de.demmer.dennis.odrascrapercontroller.services.scraper.ScraperConnector;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +14,17 @@ import java.io.IOException;
 import java.util.List;
 
 @Log4j2
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class MainController {
 
     @Autowired
-    ArticleService articleService;
+    private ArticleService articleService;
+
+    @Autowired
+    private ScraperService scraperService;
+
+    @Autowired
+    private ScraperConnector scraperConnector;
 
     @GetMapping("/articles/{id}")
     public Article getArticleById(@PathVariable int id) throws IOException {
@@ -38,6 +46,14 @@ public class MainController {
 
 
 
+    @GetMapping("/scraper/add")
+    public String setScraper( @RequestParam(value = "url", required = true) String url) {
+        Scraper scraper = new Scraper();
+        scraper.setUrl(url);
+        scraperService.save(scraper);
+        scraperConnector.getArticles();
+        return "Scraper was added";
+    }
 
 
 
@@ -58,6 +74,9 @@ public class MainController {
     public long countAllBySourceName(@PathVariable String source) {
         return articleService.countAllBySourceName(source);
     }
+
+
+
 
 
 }

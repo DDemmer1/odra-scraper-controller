@@ -2,6 +2,7 @@ package de.demmer.dennis.odrascrapercontroller.services.scraper;
 
 import de.demmer.dennis.odrascrapercontroller.entities.Article;
 import de.demmer.dennis.odrascrapercontroller.services.ArticleService;
+import de.demmer.dennis.odrascrapercontroller.services.ScraperService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,15 +23,18 @@ public class ScraperConnector {
     @Autowired
     private ArticleService articleService;
 
-    @Value("${scraper.links}")
-    private List<String> links;
+    @Autowired
+    private ScraperService scraperService;
 
 
     @Async
     @Scheduled(fixedRateString = "${scraper.interval}")
     public void getArticles() {
+
+        List<String> links = scraperService.getAllUrls();
         for (String uri : links) {
             try {
+                System.out.println(uri);
                 int newArticles = 0;
                 RestTemplate restTemplate = new RestTemplate();
                 Article[] result = restTemplate.getForObject(uri, Article[].class);
