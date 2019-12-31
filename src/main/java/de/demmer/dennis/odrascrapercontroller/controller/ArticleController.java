@@ -11,20 +11,15 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
 @RestController
-public class MainController {
+public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
-
-    @Autowired
-    private ScraperService scraperService;
-
-    @Autowired
-    private ScraperConnector scraperConnector;
 
     @GetMapping("/articles/{id}")
     public Article getArticleById(@PathVariable int id) throws IOException {
@@ -48,26 +43,6 @@ public class MainController {
         }
 
     }
-
-    @GetMapping("/scraper/add")
-    public String setScraper( @RequestParam(value = "url", required = true) String url, @RequestParam(value = "name", required = true) String name) {
-        Scraper scraper = new Scraper();
-        scraper.setUrl(url);
-        scraper.setName(name);
-        scraperService.save(scraper);
-        scraperConnector.getArticles();
-        return "Scraper with URL: '"+ url +"' was added";
-    }
-
-
-
-    /*
-     *  TODO
-     *  "/articles/author/{author}"
-     *  "/articles/author/{author}"
-     *  "/articles/topic/{topic}"
-     */
-
 
     @GetMapping("articles/count")
     public long countAll() {

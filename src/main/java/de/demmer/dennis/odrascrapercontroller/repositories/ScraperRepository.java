@@ -10,5 +10,7 @@ import java.util.List;
 public interface ScraperRepository extends CrudRepository<Scraper, Integer> {
 
 
+    Scraper findByUrl(String url);
 
+    void deleteByUrl(String url);
 }
