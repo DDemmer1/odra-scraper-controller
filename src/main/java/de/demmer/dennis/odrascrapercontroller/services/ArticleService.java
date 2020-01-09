@@ -1,7 +1,6 @@
 package de.demmer.dennis.odrascrapercontroller.services;
 
 import de.demmer.dennis.odrascrapercontroller.entities.Article;
-import de.demmer.dennis.odrascrapercontroller.entities.Scraper;
 import de.demmer.dennis.odrascrapercontroller.repositories.ArticleRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;

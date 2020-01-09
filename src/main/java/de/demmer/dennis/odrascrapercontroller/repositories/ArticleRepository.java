@@ -13,7 +13,6 @@ public interface ArticleRepository extends CrudRepository<Article, Integer>{
     List<Article> findByLink(String link);
 
     List<Article> findBySourceName(String source);
-    List<Article> findBySourceNameOrderByAuthor(String source);
     List<Article> findBySourceNameOrderByCrawlDateDesc(String source);
     List<Article> findByTextBodyContainingOrHeadlineContainingOrderByCrawlDateDesc(String queryTextBody, String queryHeadline);
 
