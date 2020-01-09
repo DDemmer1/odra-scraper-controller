@@ -30,7 +30,7 @@ public class Article {
     private String source;
 
     @Column(length = 10485760)
-    private String sourceName;
+    private String source_name;
 
     @Column(length = 10485760)
     private String author;
@@ -41,8 +41,8 @@ public class Article {
     @Column(length = 10485760)
     private String link;
 
-    private Date crawlDate;
+    private Date crawl_date;
 
     @Column(length = 10485760)
-    private String creationDate;
+    private String creation_date;
 }

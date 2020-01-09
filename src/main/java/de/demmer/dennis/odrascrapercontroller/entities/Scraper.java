@@ -20,5 +20,9 @@ public class Scraper {
 
     private String name;
 
+    private boolean error = false;
+
+    private String ErrorLog = "";
+
 
 }

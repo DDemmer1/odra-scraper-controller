@@ -5,7 +5,6 @@ import de.demmer.dennis.odrascrapercontroller.payload.ApiResponse;
 import de.demmer.dennis.odrascrapercontroller.services.ScraperService;
 import de.demmer.dennis.odrascrapercontroller.services.scraper.ScraperConnector;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,15 +32,21 @@ public class DatabaseScraperController {
                 scraper.setUrl(url);
                 scraper.setName(name);
                 scraperService.save(scraper);
-                //TODO more finegrained call of scrapers after adding one
-                scraperConnector.getArticles();
+
+                Thread thread = new Thread(){
+                    public void run(){
+                        scraperConnector.callScraper(scraper);
+                    }
+                };
+
+                thread.start();
             }
 
             return response;
 
         } catch (Exception e) {
+//            e.printStackTrace();
             return new ApiResponse(false, "Scraper with URL: '" + url + "' was not added. Scraper response validation failed");
-
         }
 
     }
