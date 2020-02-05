@@ -85,29 +85,37 @@ public class ScraperService {
 
         JSONObject firstArticle = response.getJSONObject(0);
 
-        String[] fields = {"headline", "textBody", "link", "source" , "sourceName"};
+        String[] fields = {"link"};
+//        String[] fields = {"link", "source_name"};
+//        String[] fields = {"headline", "textBody", "link", "source" , "source_name"};
 
-        for (String field: fields) {
-            ApiResponse apiResponse = validateJSONField(field,firstArticle);
-            if(!apiResponse.getSuccess()){
+        for (String field : fields) {
+            ApiResponse apiResponse = validateJSONField(field, firstArticle);
+            if (!apiResponse.getSuccess()) {
                 return apiResponse;
             }
         }
-        return new ApiResponse(true,"Scraper with URL: '" + url + "' was validated and added.");
+        if (firstArticle.has("source_name")) {
+            return new ApiResponse(true, firstArticle.getString("source_name"));
+        } else {
+            return new ApiResponse(true, firstArticle.getString("sourceName"));
+        }
+
     }
 
 
-    private ApiResponse validateJSONField(String key, JSONObject object){
+    private ApiResponse validateJSONField(String key, JSONObject object) {
         String string = object.getString(key);
 
-        if(string == null || string.equals("")){
-            return new ApiResponse(false, "No or empty '"+ key +"'. Scraper was not added.");
+        if (string == null || string.equals("")) {
+
+            return new ApiResponse(false, "No or empty '" + key + "'. Scraper was not added.");
         }
         return new ApiResponse(true, "");
 
     }
 
-    public void removeScraper(String url){
+    public void removeScraper(String url) {
         scraperRepository.deleteByUrl(url);
     }
 }

@@ -3,6 +3,7 @@ package de.demmer.dennis.odrascrapercontroller.configuration;
 import de.demmer.dennis.odrascrapercontroller.entities.Scraper;
 import de.demmer.dennis.odrascrapercontroller.repositories.ScraperRepository;
 import de.demmer.dennis.odrascrapercontroller.services.ScraperService;
+import de.demmer.dennis.odrascrapercontroller.services.TwitterService;
 import de.demmer.dennis.odrascrapercontroller.services.scraper.ScraperConnector;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class ApplicationConfiguration {
 
     @Autowired
     ScraperConnector scraperConnector;
+
+    @Autowired
+    TwitterService twitterService;
 
     @Value("${scraper.urls}")
     List<String> defaultScraper;
@@ -60,6 +64,11 @@ public class ApplicationConfiguration {
                 index++;
             }
         }
+
+        //Open Twitter Tracks
+        twitterService.openAllTracks();
+
+
 
     }
 }

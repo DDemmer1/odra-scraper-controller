@@ -37,18 +37,47 @@ public class ScraperConnector {
         }
     }
 
+//    Article[] result1 = restTemplate.getForObject(uri, Article[].class);
+//        for (Article article : result1) {
+//        if (articleService.save(article)) {
+//            newArticles++;
+//        }
+//    }
+
+
     public void callScraper(Scraper scraper){
         String uri = scraper.getUrl();
         try {
             log.info("Connecting with: " + uri);
             int newArticles = 0;
             RestTemplate restTemplate = new RestTemplate();
+
             Article[] result = restTemplate.getForObject(uri, Article[].class);
             for (Article article : result) {
                 if (articleService.save(article)) {
                     newArticles++;
                 }
             }
+
+
+//            ArticleDTO[] result = restTemplate.getForObject(uri, ArticleDTO[].class);
+//            loop: for (ArticleDTO article : result) {
+//                //TODO workaround fix scrapers with correct name
+//                if(article.getSource_name() == null){
+//                    Article[] result1 = restTemplate.getForObject(uri, Article[].class);
+//                    for (Article article1 : result1) {
+//                        if (articleService.save(article1)) {
+//                            newArticles++;
+//                        }
+//                    }
+//                    break loop;
+//                }
+//
+//                if (articleService.saveDTO(article)) {
+//                    newArticles++;
+//                }
+//            }
+
             if (newArticles > 0) {
                 log.info("Retrieved " + newArticles + " new article from " + uri);
             }

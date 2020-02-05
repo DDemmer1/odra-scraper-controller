@@ -22,7 +22,7 @@ public class DatabaseScraperController {
     ScraperConnector scraperConnector;
 
     @GetMapping("/scraper/add")
-    public ApiResponse setScraper(@RequestParam(value = "url", required = true) String url, @RequestParam(value = "name", required = true) String name) {
+    public ApiResponse setScraper(@RequestParam(value = "url", required = true) String url) {
         try {
 
             ApiResponse response = scraperService.validate(url);
@@ -30,7 +30,7 @@ public class DatabaseScraperController {
             if(response.getSuccess()){
                 Scraper scraper = new Scraper();
                 scraper.setUrl(url);
-                scraper.setName(name);
+                scraper.setName(response.getMessage());
                 scraperService.save(scraper);
 
                 Thread thread = new Thread(){
@@ -45,8 +45,8 @@ public class DatabaseScraperController {
             return response;
 
         } catch (Exception e) {
-//            e.printStackTrace();
-            return new ApiResponse(false, "Scraper with URL: '" + url + "' was not added. Scraper response validation failed");
+            e.printStackTrace();
+            return new ApiResponse(false, "Scraper with URL: '" + url + "' was not added. Scraper response validation failed\n" + e.toString());
         }
 
     }

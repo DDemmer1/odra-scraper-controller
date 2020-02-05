@@ -32,7 +32,7 @@ public class TwitterController {
 
     @GetMapping("/twitter/track/add/{hashtag}")
     public ApiResponse addTweetTrack(@PathVariable String hashtag) {
-        if(twitterService.addTrack(hashtag)){
+        if(twitterService.addTwitterTrack(hashtag)){
             return new ApiResponse(true,"Track added");
         } else {
             return new ApiResponse(false,"Error. Track not added");
@@ -42,7 +42,7 @@ public class TwitterController {
 
     @GetMapping("/twitter/track/close/{hashtag}")
     public ApiResponse closeTweetTrack(@PathVariable String hashtag) {
-        if(twitterService.closeTrack(hashtag)){
+        if(twitterService.removeTrack(hashtag)){
             return new ApiResponse(true,"Track closed");
         } else {
             return new ApiResponse(false,"Error. Track not closed");

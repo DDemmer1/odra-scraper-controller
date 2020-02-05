@@ -42,19 +42,19 @@ public class ArticleService {
     }
 
 
-    public List<Article> findBySourceNameAndQuery(String sourceName, int limit, String query){
-        if(query == null || query.equals("")){
-            return findBySourceName(sourceName,limit);
+    public List<Article> findBySourceNameAndQuery(String sourceName, int limit, String query) {
+        if (query == null || query.equals("")) {
+            return findBySourceName(sourceName, limit);
         } else {
-            List<Article> results = articleRepository.findByTextBodyContainingOrHeadlineContainingOrderByCrawlDateDesc(query,query);
-            if(!sourceName.equals("all")){
+            List<Article> results = articleRepository.findByTextBodyContainingOrHeadlineContainingOrderByCrawlDateDesc(query, query);
+            if (!sourceName.equals("all")) {
                 results.removeIf(article -> (!article.getSourceName().equals(sourceName)));
             }
-            if(limit <= 0){
+            if (limit <= 0) {
                 return results;
             } else {
                 int index = results.size() > limit ? limit : results.size();
-                return results.subList(0,index);
+                return results.subList(0, index);
             }
 
         }
@@ -62,7 +62,7 @@ public class ArticleService {
     }
 
     public List<Article> findBySourceName(String sourceName, int limit) {
-        if(limit <= 0){
+        if (limit <= 0) {
             return articleRepository.findBySourceNameOrderByCrawlDateDesc(sourceName);
         }
         long numArticles = articleRepository.countAllBySourceName(sourceName);
@@ -70,11 +70,11 @@ public class ArticleService {
         return articleRepository.findBySourceNameOrderByCrawlDateDesc(sourceName).subList(0, (int) index);
     }
 
-    public long countAllBySourceName(String sourceName){
+    public long countAllBySourceName(String sourceName) {
         return articleRepository.countAllBySourceName(sourceName);
     }
 
-    public long count(){
+    public long count() {
         return articleRepository.count();
     }
 
@@ -83,11 +83,14 @@ public class ArticleService {
 
         for (String name : scraperService.getAllScraperNames()) {
             List articelList = articleRepository.findBySourceName(name);
-            if(articelList.size() > 0){
+            if (articelList.size() > 0) {
                 testArticles.add(articleRepository.findBySourceName(name).get(0));
             }
         }
 
         return testArticles;
     }
+
+
 }
+
