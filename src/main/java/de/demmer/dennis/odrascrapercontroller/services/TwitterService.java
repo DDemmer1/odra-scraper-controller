@@ -18,6 +18,8 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Log4j2
@@ -86,6 +88,7 @@ public class TwitterService {
 
 
     public boolean addTwitterTrack(String hashtag){
+
         TwitterTrack track = twitterTrackRepository.findTwitterTrackByHashtag(hashtag).orElse(new TwitterTrack());
         track.setAmount(track.getAmount()+1);
         track.setHashtag(hashtag);
@@ -138,7 +141,18 @@ public class TwitterService {
         return tweetRepository.count();
     }
 
-    public List<Tweet> getTweetsWithHastag(String hashtag) {
+    public List<Tweet> getTweetsWithHashtag(String hashtag) {
+
+        String[] hashtagList = hashtag.split(",");
+        if(hashtagList.length > 1){
+            List<Tweet> returnList = new ArrayList<>();
+            for (String h : hashtagList) {
+                returnList.addAll(getTweetsWithHashtag(h));
+            }
+            return returnList;
+        }
+
+
         List<Tweet> toReturn = tweetRepository.findAllByTextContainingIgnoreCaseOrderByIdDesc(hashtag);
         int indexEnd = (toReturn.size() < 60) ? toReturn.size()-1 : 60;
 

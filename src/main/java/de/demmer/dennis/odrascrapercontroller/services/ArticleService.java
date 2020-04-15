@@ -56,7 +56,6 @@ public class ArticleService {
                 int index = results.size() > limit ? limit : results.size();
                 return results.subList(0, index);
             }
-
         }
 
     }

@@ -2,6 +2,7 @@ package de.demmer.dennis.odrascrapercontroller.controller;
 
 import de.demmer.dennis.odrascrapercontroller.entities.Article;
 import de.demmer.dennis.odrascrapercontroller.entities.Scraper;
+import de.demmer.dennis.odrascrapercontroller.payload.ArticleListRequest;
 import de.demmer.dennis.odrascrapercontroller.services.ArticleService;
 import de.demmer.dennis.odrascrapercontroller.services.ScraperService;
 import de.demmer.dennis.odrascrapercontroller.services.scraper.ScraperConnector;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Log4j2
 @RestController
@@ -55,6 +58,16 @@ public class ArticleController {
     }
 
 
+    @PostMapping("articles")
+    public Set<Article> getArticlesByIdList(@RequestBody ArticleListRequest request){
+        Set<Article> result = new HashSet<>();
+
+        for (Integer id: request.getArticleIds()) {
+            result.add(articleService.findById(id));
+        }
+
+        return result;
+    }
 
 
 
